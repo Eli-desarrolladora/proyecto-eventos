@@ -1,7 +1,7 @@
 // services/api.js - Cliente HTTP centralizado con Axios
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+const API_URL = process.env.REACT_APP_API_URL || 'https://proyecto-eventos-production.up.railway.app';
 
 // Instancia de Axios configurada
 const api = axios.create({
