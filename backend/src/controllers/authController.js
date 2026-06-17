@@ -18,8 +18,8 @@ const generarToken = (usuario) => {
  * POST /api/auth/register
  * Registrar nuevo usuario
  */
-const register = async (req, res) => {
-  try {
+const register = async (req, res, next) => {
+    try {
     // Validar datos de entrada
     const errores = validationResult(req);
     if (!errores.isEmpty()) {
