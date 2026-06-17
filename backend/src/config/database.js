@@ -4,17 +4,10 @@ require('dotenv').config();
 let sequelize;
 
 if (process.env.DATABASE_URL) {
-  const isRailwayInternal = process.env.DATABASE_URL.includes('railway.internal');
-
   sequelize = new Sequelize(process.env.DATABASE_URL, {
     dialect: 'postgres',
     logging: false,
-    dialectOptions: isRailwayInternal ? {} : {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false,
-      },
-    },
+    dialectOptions: {},
     pool: { max: 5, min: 0, acquire: 30000, idle: 10000 },
   });
 } else {
