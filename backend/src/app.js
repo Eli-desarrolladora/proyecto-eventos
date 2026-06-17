@@ -13,6 +13,7 @@ const ticketRoutes = require('./routes/ticketRoutes');
 const { globalLimiter } = require('./middleware/rateLimit');
 
 const app = express();
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 3001;
 
 // ─── SEGURIDAD: Helmet (headers HTTP seguros) ───────────────────────────────
@@ -58,7 +59,7 @@ app.use((req, res) => {
 
 // ─── MANEJO GLOBAL DE ERRORES ────────────────────────────────────────────────
 app.use((err, req, res, next) => {
-  console.error('Error no manejado: - app.js:61', err.stack);
+  console.error('Error no manejado: - app.js:62', err.stack);
   res.status(500).json({
     error: 'Error interno del servidor',
     ...(process.env.NODE_ENV === 'development' && { detalle: err.message }),
@@ -70,15 +71,15 @@ async function iniciarServidor() {
   try {
     // Sincronizar base de datos (alter: true actualiza tablas sin borrarlas)
     await sequelize.authenticate();
-    console.log('✅ Conexión a la base de datos establecida. - app.js:73');
+    console.log('✅ Conexión a la base de datos establecida. - app.js:74');
     await sequelize.sync({ alter: process.env.NODE_ENV === 'development' });
-    console.log('✅ Modelos sincronizados con la base de datos. - app.js:75');
+    console.log('✅ Modelos sincronizados con la base de datos. - app.js:76');
 
     app.listen(PORT, () => {
-      console.log(`🚀 Servidor corriendo en http://localhost:${PORT} - app.js:78`);
+      console.log(`🚀 Servidor corriendo en http://localhost:${PORT} - app.js:79`);
     });
   } catch (error) {
-    console.error('❌ Error al iniciar el servidor: - app.js:81', error);
+    console.error('❌ Error al iniciar el servidor: - app.js:82', error);
     process.exit(1);
   }
 }
