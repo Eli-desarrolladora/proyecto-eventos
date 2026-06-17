@@ -1,8 +1,6 @@
 // models/index.js - Configuración de Sequelize y exportación de modelos
 const { Sequelize } = require('sequelize');
 
-const { Sequelize } = require('sequelize');
-
 const sequelize = process.env.DATABASE_URL
   ? new Sequelize(process.env.DATABASE_URL, {
       dialect: 'postgres',
