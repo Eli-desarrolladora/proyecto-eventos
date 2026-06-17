@@ -3,8 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
-const { sequelize } = require('./models');
-
+const sequelize = require('./config/database');
 // Importar rutas
 const authRoutes = require('./routes/authRoutes');
 const eventoRoutes = require('./routes/eventoRoutes');
@@ -59,7 +58,7 @@ app.use((req, res) => {
 
 // ─── MANEJO GLOBAL DE ERRORES ────────────────────────────────────────────────
 app.use((err, req, res, next) => {
-  console.error('Error no manejado:', err.stack);
+  console.error('Error no manejado: - app.js:61', err.stack);
   res.status(500).json({
     error: 'Error interno del servidor',
     ...(process.env.NODE_ENV === 'development' && { detalle: err.message }),
@@ -71,15 +70,15 @@ async function iniciarServidor() {
   try {
     // Sincronizar base de datos (alter: true actualiza tablas sin borrarlas)
     await sequelize.authenticate();
-    console.log('✅ Conexión a la base de datos establecida.');
+    console.log('✅ Conexión a la base de datos establecida. - app.js:73');
     await sequelize.sync({ alter: process.env.NODE_ENV === 'development' });
-    console.log('✅ Modelos sincronizados con la base de datos.');
+    console.log('✅ Modelos sincronizados con la base de datos. - app.js:75');
 
     app.listen(PORT, () => {
-      console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+      console.log(`🚀 Servidor corriendo en http://localhost:${PORT} - app.js:78`);
     });
   } catch (error) {
-    console.error('❌ Error al iniciar el servidor:', error);
+    console.error('❌ Error al iniciar el servidor: - app.js:81', error);
     process.exit(1);
   }
 }
