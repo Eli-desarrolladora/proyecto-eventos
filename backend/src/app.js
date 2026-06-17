@@ -21,7 +21,11 @@ app.use(helmet());
 
 // ─── CORS ───────────────────────────────────────────────────────────────────
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: [
+    process.env.FRONTEND_URL,
+    'http://localhost:3000',
+    'https://proyecto-eventos.vercel.app',
+  ].filter(Boolean),
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
@@ -59,7 +63,7 @@ app.use((req, res) => {
 
 // ─── MANEJO GLOBAL DE ERRORES ────────────────────────────────────────────────
 app.use((err, req, res, next) => {
-  console.error('Error no manejado: - app.js:62', err.stack);
+  console.error('Error no manejado: - app.js:66', err.stack);
   res.status(500).json({
     error: 'Error interno del servidor',
     ...(process.env.NODE_ENV === 'development' && { detalle: err.message }),
@@ -71,15 +75,15 @@ async function iniciarServidor() {
   try {
     // Sincronizar base de datos (alter: true actualiza tablas sin borrarlas)
     await sequelize.authenticate();
-    console.log('✅ Conexión a la base de datos establecida. - app.js:74');
+    console.log('✅ Conexión a la base de datos establecida. - app.js:78');
     await sequelize.sync({ alter: process.env.NODE_ENV === 'development' });
-    console.log('✅ Modelos sincronizados con la base de datos. - app.js:76');
+    console.log('✅ Modelos sincronizados con la base de datos. - app.js:80');
 
     app.listen(PORT, () => {
-      console.log(`🚀 Servidor corriendo en http://localhost:${PORT} - app.js:79`);
+      console.log(`🚀 Servidor corriendo en http://localhost:${PORT} - app.js:83`);
     });
   } catch (error) {
-    console.error('❌ Error al iniciar el servidor: - app.js:82', error);
+    console.error('❌ Error al iniciar el servidor: - app.js:86', error);
     process.exit(1);
   }
 }
