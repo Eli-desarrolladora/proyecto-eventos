@@ -73,18 +73,18 @@ app.use((err, req, res, next) => {
 // ─── INICIAR SERVIDOR ───────────────────────────────────────────────────────
 async function iniciarServidor() {
   try {
-    // Sincronizar base de datos (alter: true actualiza tablas sin borrarlas)
     await sequelize.authenticate();
-    console.log('✅ Conexión a la base de datos establecida. - app.js:78');
+    console.log('✅ Conexión a la base de datos establecida. - app.js:77');
     await sequelize.sync({ alter: process.env.NODE_ENV === 'development' });
-    console.log('✅ Modelos sincronizados con la base de datos. - app.js:80');
+    console.log('✅ Modelos sincronizados con la base de datos. - app.js:79');
 
     app.listen(PORT, () => {
-      console.log(`🚀 Servidor corriendo en http://localhost:${PORT} - app.js:83`);
+      console.log(`🚀 Servidor corriendo en http://localhost:${PORT} - app.js:82`);
     });
   } catch (error) {
-    console.error('❌ Error al iniciar el servidor: - app.js:86', error);
-    process.exit(1);
+    console.error('❌ Error al iniciar el servidor: - app.js:85', error);
+    console.log('🔄 Reintentando en 5 segundos... - app.js:86');
+    setTimeout(iniciarServidor, 5000);
   }
 }
 
